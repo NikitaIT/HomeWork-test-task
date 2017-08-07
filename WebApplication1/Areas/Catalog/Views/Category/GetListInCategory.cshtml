@@ -3,10 +3,11 @@
 <div class="col-md-4">
     @Html.Action("Tree", "Category")
 </div>
+
 <div class="col-md-8">
     <div class="panel panel-default">
         <div class="panel-heading">
-            Статьи в выбранной категории
+            Статьи в выбранной категории.
             @if (Request.IsAuthenticated)
             {
                 <div class="btn-group btn-group-sm">
@@ -53,5 +54,6 @@
                 </tr>
             }
         </table>
+        <div></div>
     </div>
     </div>

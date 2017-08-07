@@ -17,7 +17,7 @@ namespace WebApplication1.Areas.Catalog.Mappings
                 .Not.Nullable();
             Map(x => x.Title).Length(256)
                 .Not.Nullable();
-            Map(x => x.Content);
+            Map(x => x.Content).Length(10000);
             References(x => x.Category);
         }
     }

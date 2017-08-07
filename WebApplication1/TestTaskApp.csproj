@@ -220,7 +220,7 @@
     <Content Include="Areas\Catalog\Views\Category\Edit.cshtml" />
     <Content Include="Areas\Catalog\Views\Category\Delete.cshtml" />
     <Content Include="Areas\Catalog\Views\Article\List.cshtml" />
-    <None Include="Areas\Catalog\Views\Category\GetListInCategory.cshtml" />
+    <Content Include="Areas\Catalog\Views\Category\GetListInCategory.cshtml" />
     <None Include="Properties\PublishProfiles\TestTaskApp20170807072738 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
