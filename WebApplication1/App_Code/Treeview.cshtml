@@ -1,0 +1,43 @@
+﻿@using System.Web.Mvc
+@using System.Web.Mvc.Ajax
+@using System.Web.Optimization
+@using Microsoft.Ajax.Utilities
+@using WebApplication1.Areas.Catalog.Models
+@helper GetSubTreeView(CategoryTreeViewModel categoryTree, ViewContext viewContext, IViewDataContainer viewDataContainer)
+{
+//TODO: Подгрузка скрипта, если он не определён
+<li>
+@{var Ajax = new AjaxHelper(viewContext, viewDataContainer);}
+    <div class="btn-group btn-group-xs">
+        @Ajax.ActionLink(categoryTree.Name, "GetListInCategory", "Category", new { categoryId = categoryTree.Id }, new AjaxOptions { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
+        @if (Request.IsAuthenticated)
+        {
+
+            @Ajax.ActionLink("Add", "Create", "Category", new { id = categoryTree.Id }, new AjaxOptions { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
+
+            @Ajax.ActionLink("Edit", "Edit", "Category", new { id = categoryTree.Id }, new AjaxOptions { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
+
+            @Ajax.ActionLink("Delete", "Delete", "Category", new { id = categoryTree.Id }, new AjaxOptions { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
+
+        }
+    </div>
+
+
+
+    @if (categoryTree.HasChildCategories)
+    {
+    <ul>
+        @foreach (CategoryTreeViewModel category in categoryTree.ChildCategories)
+        {
+            @GetSubTreeView(category, viewContext, viewDataContainer)
+        }
+    </ul>
+    }
+</li>
+}
+@helper GetTreeView(CategoryTreeViewModel categoryTree, ViewContext viewContext, IViewDataContainer viewDataContainer, string ulParentClass = "ul-treefree ul-dropfree")
+{
+    <ul class="@ulParentClass">
+        @GetSubTreeView(categoryTree, viewContext, viewDataContainer)
+    </ul>
+}

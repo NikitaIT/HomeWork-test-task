@@ -1,0 +1,52 @@
+﻿@model IEnumerable<WebApplication1.Areas.Catalog.Entites.Article>
+    
+    <div class="col-md-4">
+        @Html.Action("Tree", "Category")
+    </div>
+
+    <div class="col-md-8">
+
+        <br />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>
+                    Все статьи
+                </h3>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Author)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Content)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Category)
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+            {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Author)
+                        </td>
+                        <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            @Html.DisplayFor(modelItem => item.Content)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category.Name)
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>

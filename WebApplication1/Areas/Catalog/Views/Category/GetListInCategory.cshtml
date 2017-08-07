@@ -1,0 +1,57 @@
+﻿@model IEnumerable<WebApplication1.Areas.Catalog.Entites.Article>
+
+<div class="col-md-4">
+    @Html.Action("Tree", "Category")
+</div>
+<div class="col-md-8">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Статьи в выбранной категории
+            @if (Request.IsAuthenticated)
+            {
+                <div class="btn-group btn-group-sm">
+                    @Ajax.ActionLink("Create New", "Create", "Article", new { categoryId = ViewBag.CategoryId }, new AjaxOptions() { UpdateTargetId = "articles" }, new { @class = "btn btn-success" })
+                </div>
+            }
+        </div>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Author)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Content)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Author)
+                    </td>
+                    <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                        @Html.DisplayFor(modelItem => item.Content)
+                    </td>
+                    <td>
+                        @if (Request.IsAuthenticated)
+                {
+                            <div class="btn-group btn-group-sm">
+                                @Ajax.ActionLink("Edit", "Edit", "Article", new { id = item.Id }, new AjaxOptions() { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
+                                @Ajax.ActionLink("Details", "Details", "Article", new { id = item.Id }, new AjaxOptions() { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
+                                @Ajax.ActionLink("Delete", "Delete", "Article", new { id = item.Id }, new AjaxOptions() { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
+                            </div>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    </div>
