@@ -9,36 +9,14 @@ using NHibernate;
 using NHibernate.Linq;
 using WebApplication1.Areas.Catalog.Entites;
 using WebApplication1.Areas.Catalog.Models;
-using WebApplication1.Areas.Catalog.Utils;
+using WebApplication1.Areas.Catalog.Repositores;
+using WebApplication1.Models;
 
 namespace WebApplication1.Areas.Catalog.Controllers
 {
     public class ArticleController : Controller
     {
-        private ISession session = NHibernateHelper.OpenSession();
-
-        public ArticleController()
-        {
-            Mapper.Initialize(cfg => cfg.CreateMap<Category, CategoryTreeViewModel>()
-                .ForMember(x => x.NestingLevel, o => o.Ignore())
-                .ForMember(x => x.IsExpanded, o => o.Ignore())
-                .ForMember(x => x.IsSelected, o => o.Ignore())
-                .ForMember(x => x.HasChildCategories, o => o.Ignore())
-                .AfterMap((category, categoryModel) =>
-                {
-                    // Mapper doesn't know about categories relationship, so we need assign them explicitly.
-                    // Without it setting IsExpanded = true will not have effect on childCategory.ParentCategory
-                    // as this is another object
-                    if (categoryModel == null || categoryModel.ChildCategories.IsEmpty())
-                    {
-                        return;
-                    }
-                    foreach (var childCategory in categoryModel.ChildCategories)
-                    {
-                        childCategory.ParentCategory = categoryModel;
-                    }
-                }));
-        }
+        private readonly ArticleRepository dbArticles = new DatabaseContext().Articles;
 
         // GET: Catalog/Article
         public ActionResult Index()
@@ -47,18 +25,14 @@ namespace WebApplication1.Areas.Catalog.Controllers
         }
         public ActionResult List()
         {
-            var articles = session.Query<Article>().ToList();
-            if (articles.IsEmpty())
-            {
-                articles = new List<Article>();
-            }
+            var articles = dbArticles.GetList();
             return View(articles);
         }
 
         // GET: Catalog/Article/Details/5
         public ActionResult Details(int id)
         {
-            var article = session.Get<Article>(id);
+            var article = dbArticles.Get(id);
             return PartialView(article);
         }
 
@@ -75,17 +49,7 @@ namespace WebApplication1.Areas.Catalog.Controllers
         {
             try
             {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    var category = session.Get<Category>(categoryId);
-                    if (category == null)
-                    {
-                        throw new NullReferenceException();
-                    }
-                    article.Category = category;
-                    session.Save(article);
-                    transaction.Commit();
-                }
+                dbArticles.Create(article, categoryId);
                 return RedirectToAction("List");
             }
             catch
@@ -97,7 +61,7 @@ namespace WebApplication1.Areas.Catalog.Controllers
         // GET: Catalog/Article/Edit/5
         public ActionResult Edit(int id)
         {
-            var article = session.Get<Article>(id);
+            var article = dbArticles.Get(id);
             if (article == null)
             {
                 return HttpNotFound();
@@ -107,22 +71,11 @@ namespace WebApplication1.Areas.Catalog.Controllers
 
         // POST: Catalog/Article/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, Article article)
+        public ActionResult Edit(int categoryId, Article article)
         {
             try
             {
-                var articletoUpdate = session.Get<Article>(id);
-
-                articletoUpdate.Title = article.Title;
-                articletoUpdate.Author = article.Author;
-                articletoUpdate.Content = article.Content;
-                articletoUpdate.Category = article.Category;
-
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    session.Save(articletoUpdate);
-                    transaction.Commit();
-                }
+                dbArticles.Update(categoryId, article);
                 return RedirectToAction("List");
             }
             catch
@@ -134,7 +87,7 @@ namespace WebApplication1.Areas.Catalog.Controllers
         // GET: Catalog/Article/Delete/5
         public ActionResult Delete(int id)
         {
-            var article = session.Get<Article>(id);
+            var article = dbArticles.Get(id);
             return PartialView(article);
         }
 
@@ -144,14 +97,7 @@ namespace WebApplication1.Areas.Catalog.Controllers
         {
             try
             {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    //TODO: разобраться почему session.Delete требует value соответствие
-                    var article1 = session.Get<Article>(id);
-                    session.Delete(article1);
-                    transaction.Commit();
-                }
-
+                dbArticles.Delete(id);
                 return RedirectToAction("List");
             }
             catch
@@ -164,7 +110,7 @@ namespace WebApplication1.Areas.Catalog.Controllers
         {
             if (disposing)
             {
-                session.Dispose();
+                dbArticles.Dispose();
             }
             base.Dispose(disposing);
         }

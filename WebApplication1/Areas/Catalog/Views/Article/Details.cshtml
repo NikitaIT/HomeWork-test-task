@@ -30,6 +30,6 @@
     </dl>
 </div>
 <p>
-    @Ajax.ActionLink("Edit", "Edit", new { id = Model.Id }, new AjaxOptions() { UpdateTargetId = "articles" }) |
+    @Ajax.ActionLink("Edit", "Edit", new { id = (int)Model.Id }, new AjaxOptions() { UpdateTargetId = "articles" }) |
     @Ajax.ActionLink("Back to List", "GetListInCategory","Category",new { categoryId = Model.Category.Id}, new AjaxOptions() { UpdateTargetId = "articles" })
 </p>

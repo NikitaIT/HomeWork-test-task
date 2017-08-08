@@ -12,12 +12,18 @@ namespace WebApplication1.Tests.Controllers
     [TestClass]
     public class HomeControllerTest
     {
+        private HomeController controller;
+        private ViewResult result;
+
+        [TestInitialize]
+        public void SetupContext()
+        {
+            // Arrange
+            controller = new HomeController();
+        }
         [TestMethod]
         public void Index()
         {
-            // Arrange
-            HomeController controller = new HomeController();
-
             // Act
             ViewResult result = controller.Index() as ViewResult;
 
@@ -28,8 +34,6 @@ namespace WebApplication1.Tests.Controllers
         [TestMethod]
         public void About()
         {
-            // Arrange
-            HomeController controller = new HomeController();
 
             // Act
             ViewResult result = controller.About() as ViewResult;
@@ -41,9 +45,6 @@ namespace WebApplication1.Tests.Controllers
         [TestMethod]
         public void Contact()
         {
-            // Arrange
-            HomeController controller = new HomeController();
-
             // Act
             ViewResult result = controller.Contact() as ViewResult;
 

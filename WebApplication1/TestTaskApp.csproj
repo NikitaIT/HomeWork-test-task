@@ -176,9 +176,10 @@
     <Compile Include="Areas\Catalog\Entites\Category.cs" />
     <Compile Include="Areas\Catalog\Mappings\ArticleMap.cs" />
     <Compile Include="Areas\Catalog\Mappings\CategoryMap.cs" />
-    <Compile Include="Areas\Catalog\Models\ArticleViewModel.cs" />
     <Compile Include="Areas\Catalog\Models\CategoryTreeViewModel.cs" />
-    <Compile Include="Areas\Catalog\Utils\NHibernateHelper.cs" />
+    <Compile Include="Areas\Catalog\Repositores\ArticleRepository.cs" />
+    <Compile Include="Areas\Catalog\Repositores\CategoryRepository.cs" />
+    <Compile Include="Areas\Catalog\Repositores\IRepository.cs" />
     <Compile Include="Areas\Catalog\Utils\PersistentObject.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

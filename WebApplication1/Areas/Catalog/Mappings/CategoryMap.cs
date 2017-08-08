@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.Mapping;
 using WebApplication1.Areas.Catalog.Entites;
-using WebApplication1.Areas.Catalog.Models;
 
 namespace WebApplication1.Areas.Catalog.Mappings
 {

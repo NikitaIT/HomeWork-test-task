@@ -5,10 +5,18 @@ using NHibernate;
 using WebApplication1.Models.Identity;
 using System.Configuration;
 using NHibernate.Tool.hbm2ddl;
+using WebApplication1.Areas.Catalog.Entites;
+using WebApplication1.Areas.Catalog.Repositores;
 
 namespace WebApplication1.Models
 {
-    public class DatabaseContext
+    interface IDatabaseContext
+    {
+        IUserStore<User, int> Users { get; }
+        CategoryRepository Categores { get; }
+        ArticleRepository Articles { get; }
+    }
+    public class DatabaseContext : IDatabaseContext
     {
         private readonly ISessionFactory sessionFactory;
 
@@ -18,6 +26,12 @@ namespace WebApplication1.Models
             sessionFactory = Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2008.ConnectionString(connectionString))
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<DatabaseContext>())
+                .Mappings(m =>
+                          m.FluentMappings
+                              .AddFromAssemblyOf<Category>())
+               .Mappings(m =>
+                          m.FluentMappings
+                              .AddFromAssemblyOf<Article>())
                 .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))
                 .BuildSessionFactory();
         }
@@ -27,5 +41,7 @@ namespace WebApplication1.Models
         }
 
         public IUserStore<User, int> Users => new IdentityStore(MakeSession());
+        public CategoryRepository Categores => new CategoryRepository(MakeSession());
+        public ArticleRepository Articles => new ArticleRepository(MakeSession());
     }
 }

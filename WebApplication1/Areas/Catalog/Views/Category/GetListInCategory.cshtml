@@ -45,9 +45,9 @@
                         @if (Request.IsAuthenticated)
                 {
                             <div class="btn-group btn-group-sm">
-                                @Ajax.ActionLink("Edit", "Edit", "Article", new { id = item.Id }, new AjaxOptions() { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
-                                @Ajax.ActionLink("Details", "Details", "Article", new { id = item.Id }, new AjaxOptions() { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
-                                @Ajax.ActionLink("Delete", "Delete", "Article", new { id = item.Id }, new AjaxOptions() { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
+                                @Ajax.ActionLink("Edit", "Edit", "Article", new { id = (int)item.Id }, new AjaxOptions() { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
+                                @Ajax.ActionLink("Details", "Details", "Article", new { id = (int)item.Id }, new AjaxOptions() { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
+                                @Ajax.ActionLink("Delete", "Delete", "Article", new { id = (int)item.Id }, new AjaxOptions() { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
                             </div>
                         }
                     </td>

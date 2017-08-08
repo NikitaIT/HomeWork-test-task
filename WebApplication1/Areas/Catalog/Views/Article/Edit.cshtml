@@ -1,5 +1,4 @@
-﻿@using WebApplication1.Areas.Catalog.Entites
-@model WebApplication1.Areas.Catalog.Entites.Article
+﻿@model WebApplication1.Areas.Catalog.Entites.Article
 
 
 @using (Ajax.BeginForm("Edit","Article", new AjaxOptions() { UpdateTargetId = "articles"}))
@@ -10,6 +9,8 @@
         <h4>Article</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.Hidden("categoryId", Model.Category.Id)
+
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">

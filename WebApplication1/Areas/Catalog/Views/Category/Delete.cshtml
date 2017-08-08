@@ -36,7 +36,7 @@
 
         <div class="form-actions no-color btn-group">
             <input type="submit" value="Delete" class="btn btn-default" />
-            @Ajax.ActionLink("Back to List", "GetListInCategory", "Category", new { categoryId = Model.Id }, new AjaxOptions() { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
+            @Ajax.ActionLink("Back to List", "GetListInCategory", "Category", new { categoryId = (int)Model.Id }, new AjaxOptions() { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
         </div>
     }
 </div>

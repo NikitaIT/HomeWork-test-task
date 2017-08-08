@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using WebApplication1.Areas.Catalog.Models;
 using WebApplication1.Areas.Catalog.Utils;
 
 namespace WebApplication1.Areas.Catalog.Entites
