@@ -18,6 +18,11 @@ namespace WebApplication1.Areas.Catalog.Controllers
     {
         private readonly CategoryRepository dbCategores = new DatabaseContext().Categores;
 
+        public CategoryController()
+        {
+            new DataInitializer();
+        }
+
         // GET: Catalog/Article/5
         public ActionResult GetListInCategory(int categoryId)
         {
@@ -101,7 +106,6 @@ namespace WebApplication1.Areas.Catalog.Controllers
         [HttpPost]
         public ActionResult Delete(int id, Category category)
         {
-            if (id==1) return RedirectToAction("List", "Article");
             try
             {
                 dbCategores.Delete(id,category);
@@ -120,5 +124,6 @@ namespace WebApplication1.Areas.Catalog.Controllers
             }
             base.Dispose(disposing);
         }
+
     }
 }

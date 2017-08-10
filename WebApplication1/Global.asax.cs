@@ -9,6 +9,7 @@ using AutoMapper;
 using FluentNHibernate.Conventions;
 using WebApplication1.Areas.Catalog.Entites;
 using WebApplication1.Areas.Catalog.Models;
+using WebApplication1.Models;
 
 namespace WebApplication1
 {
@@ -28,9 +29,6 @@ namespace WebApplication1
                 .ForMember(x => x.HasChildCategories, o => o.Ignore())
                 .AfterMap((category, categoryModel) =>
                 {
-                    // Mapper doesn't know about categories relationship, so we need assign them explicitly.
-                    // Without it setting IsExpanded = true will not have effect on childCategory.ParentCategory
-                    // as this is another object
                     if (categoryModel == null || categoryModel.ChildCategories.IsEmpty())
                     {
                         return;

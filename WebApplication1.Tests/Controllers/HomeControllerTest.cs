@@ -34,7 +34,6 @@ namespace WebApplication1.Tests.Controllers
         [TestMethod]
         public void About()
         {
-
             // Act
             ViewResult result = controller.About() as ViewResult;
 

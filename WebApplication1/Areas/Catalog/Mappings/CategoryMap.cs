@@ -8,7 +8,7 @@ namespace WebApplication1.Areas.Catalog.Mappings
         public CategoryMap()
         {
             Table("[Category]");
-            Id(x => x.Id, "CategoryId").GeneratedBy.Identity();
+            Id(x => x.Id, "CategoryId").GeneratedBy.Identity().Default(0);
 
             Map(x => x.Name).Length(256)
                 .Not.Nullable()
@@ -16,7 +16,7 @@ namespace WebApplication1.Areas.Catalog.Mappings
 
             Map(x => x.IsActive).Not.Nullable().Default("1");
 
-            References(x => x.ParentCategory)
+            References(x => x.ParentCategory).Nullable()
                 .Column("ParentCategoryId");
 
             HasMany(x => x.ChildCategories)

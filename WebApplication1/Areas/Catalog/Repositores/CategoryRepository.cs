@@ -5,6 +5,7 @@ using FluentNHibernate.Conventions;
 using NHibernate;
 using NHibernate.Linq;
 using WebApplication1.Areas.Catalog.Entites;
+using WebApplication1.Areas.Catalog.Mappings;
 
 namespace WebApplication1.Areas.Catalog.Repositores
 {
@@ -36,19 +37,36 @@ namespace WebApplication1.Areas.Catalog.Repositores
         {
             session.Save(item);
         }
+        private void SetCurrentIDTo1()
+        {
+           /* --Set current ID to "1"
+              -- If table already contains data, use "0"
+              -- If table is empty and never insert data, use "1"
+              -- Use SP https://github.com/reduardo7/TableTruncate
+           */
+            var sql = $"DBCC CHECKIDENT ([Category], RESEED,1)";
+            var query = session.CreateSQLQuery(sql);
+            query.ExecuteUpdate();
+        }
         public void Add(Category item, int parantCategoryId)
         {
+            if (parantCategoryId == 0)
+            {
+                if (Get(1) != null)
+                {
+                    return;
+                }
+                SetCurrentIDTo1();
+            }
             using (ITransaction transaction = session.BeginTransaction())
             {
                 var parantCategory = Get(parantCategoryId);
-                if (parantCategory == null)
-                {
-                    throw new NullReferenceException();
-                }
                 item.ParentCategory = parantCategory;
                 Create(item);
                 transaction.Commit();
             }
+            
+                
         }
 
         public void Update(Category item)
@@ -70,28 +88,26 @@ namespace WebApplication1.Areas.Catalog.Repositores
 
         public void Delete(Category item)
         {
-            session.Delete(item);
-        }
-        public void Delete(int id, Category category)
-        {
             using (ITransaction transaction = session.BeginTransaction())
             {
-                //TODO: разобраться почему session.Delete требует value соответствие
-                if (string.IsNullOrEmpty(category.Name))
-                {
-                    category = Get(id);
-                }
-                foreach (var cat in category.ChildCategories)
-                {
-                    Delete(cat.Id, cat);
-                }
-                if (!category.ChildCategories.IsEmpty())
-                {
-                    category = Get(id);
-                }
-                Delete(category);
+                session.Delete(item);
                 transaction.Commit();
             }
+        }
+
+        public void Delete(int id, Category category)
+        {
+            //TODO: разобраться почему session.Delete требует value соответствие
+            if (string.IsNullOrEmpty(category.Name))
+            {
+                category = Get(id);
+            }
+            foreach (var cat in category.ChildCategories)
+            {
+                Delete(cat.Id, cat);
+            }
+            category.ChildCategories.Clear();
+            Delete(category);
         }
     }
 }

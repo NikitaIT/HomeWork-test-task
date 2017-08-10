@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using WebApplication1.Areas.Catalog.Controllers;
+using WebApplication1.Areas.Catalog.Entites;
+using WebApplication1.Models;
+using WebApplication1.Models.Identity;
 
 namespace WebApplication1.Controllers
 {
@@ -26,5 +31,7 @@ namespace WebApplication1.Controllers
 
             return View();
         }
+
+        
     }
 }

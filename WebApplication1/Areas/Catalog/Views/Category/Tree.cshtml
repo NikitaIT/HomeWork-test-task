@@ -6,11 +6,21 @@
 @Treeview.GetTreeView(Model,this.ViewContext, this)
 *@
 @GetTreeView(Model,this.ViewContext, this)
+
 @helper GetSubTreeView(CategoryTreeViewModel categoryTree, ViewContext viewContext, IViewDataContainer viewDataContainer)
 {
+var Ajax = new AjaxHelper(viewContext, viewDataContainer);
 //TODO: Подгрузка скрипта, если он не определён
+if (categoryTree.Id == 0)
+{
+    if (Request.IsAuthenticated)
+    {
+            <br />
+            @Ajax.ActionLink("Add", "Create", "Category", new { id = categoryTree.Id }, new AjaxOptions { UpdateTargetId = "articles" }, new { @class = "btn btn-primary" })
+    }
+    return;
+}
     <li>
-        @{var Ajax = new AjaxHelper(viewContext, viewDataContainer);}
         <div class="btn-group btn-group-xs">
             @Ajax.ActionLink(categoryTree.Name, "GetListInCategory", "Category", new { categoryId = categoryTree.Id }, new AjaxOptions { UpdateTargetId = "articles" }, new { @class = "btn btn-default" })
             @if (Request.IsAuthenticated)
